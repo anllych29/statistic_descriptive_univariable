@@ -1,0 +1,83 @@
+library(readxl)
+administradores <- read_excel("~/PRACTICA EN R/administradores.xlsx")
+View(administradores)
+#----------------------------
+#converti a numerico dos variables para poder trabajar
+#--------------------------------------
+edad<- as.numeric(administradores$EDAD)
+n_hijos<-as.numeric(administradores$N_HIJOS)
+
+#-----------------------univariado --------------------------
+
+#----------------------------
+'MEDIDAS DE TENDENCIA CENTRAL'
+#---------------------------
+# MEDIA
+mean(edad,na.rm = FALSE)
+mean(n_hijos,na.rm=FALSE)
+'la edad media de los trabajadores administrativos es de 38 años '
+'además se sabe que el numero de hijos promedio por trabajador administrativo es de 3'
+
+#MEDIANA
+median(edad,na.rm=FALSE)
+median(n_hijos,na.rm=FALSE)
+'el 50% de las edades de los trabajadores son menores a 39y el 50% de ellos tiene menos de 4 hijos '
+
+#MODA
+moda=function(x)
+{
+  #Funcion que encuentra la moda de un vector x
+  m1 <- sort(table(x),decreasing=T)
+  moda <- names(m1[m1==m1[1]])
+  moda <- as.numeric(moda)
+  return(moda)
+}
+moda(edad)
+'moda:valor de la variable que se repite con más frecuencia'
+
+#-------------------------------
+'MEDIDA DE TENDENCIA NO CENTRAL '
+#--------------------------------
+
+quantile(edad, probs = c(0.25,0.50,0.75),na.rm=TRUE)
+#GRÁFICA BOXPLOT
+boxplot<- boxplot(edad,ylab="edades de administradores")
+#--------- RESUMEN-------------
+'1era forma'
+xi<-boxplot$stats
+colnames(xi)<- boxplot$names
+rownames(xi)<-c('lower whisker','lower quartile','median','upper quartile','upper whisker')
+xi
+'2da forma'
+summary(edad)
+
+#--------------------------------
+'MEDIDA DE DISPERSIÓN'
+#--------------------------------
+range(edad,na.rm=TRUE)
+min(edad,na.rm=TRUE)
+max(edad,na.rm=TRUE)
+var(edad,na.rm=TRUE)
+sd(edad, na.rm=TRUE)
+'la dispersión de la edad respecto a su media es de 1.7 en promedio'
+cv=sd(edad)/mean(edad)
+cv #-----------------coeficiente de pearson o variación
+'los datos presenta poca dispersión (cv=4%)'
+
+#------------------------------
+'MEDIDA DE FORMA'
+#------------------------
+library(psych)
+skew(edad)
+kurtosi(edad)
+
+#---------------------------------------
+            'GRÁFICA'
+#---------------------------------------
+'1ERA FORMA'
+hist(edad)
+
+'2DA FORMA'
+hist(edad,main="histograma de frecuencia de edades",xla="Edad",ylab="Frecuencia",col="green",border="black")
+
+boxplot<- boxplot(edad,main="GRáfica boxplot",ylab="edades de administradores")
